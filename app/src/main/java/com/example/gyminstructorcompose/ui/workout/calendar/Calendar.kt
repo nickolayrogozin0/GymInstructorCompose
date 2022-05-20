@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,28 +75,16 @@ fun Calendar() {
                         contentAlignment = Alignment.Center,
                     ) {
                         if (index == currentDay.value) {
-                            Box(
-                                modifier = Modifier
-                                    .background
-                                        (
-                                        color = MaterialTheme.colorScheme.primary,
-                                        shape = CircleShape
-                                    )
-                                    .size(32.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "$index",
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    textAlign = TextAlign.Center,
-                                )
-                            }
+                            CalendarCircle(
+                                index = index.toString(),
+                                backgroundColor = MaterialTheme.colorScheme.primary,
+                                textColor = MaterialTheme.colorScheme.onPrimary
+                            )
                         } else {
-                            Text(
-                                text = "$index",
-                                style = MaterialTheme.typography.labelLarge,
-                                textAlign = TextAlign.Center
+                            CalendarCircle(
+                                index = index.toString(),
+                                backgroundColor = MaterialTheme.colorScheme.surface,
+                                textColor = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -105,6 +94,29 @@ fun Calendar() {
         }
     }
 }
+
+
+@Composable
+fun CalendarCircle(index: String, backgroundColor: Color, textColor: Color) {
+    Box(
+        modifier = Modifier
+            .background
+                (
+                color = backgroundColor,
+                shape = CircleShape
+            )
+            .size(32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = index,
+            style = MaterialTheme.typography.labelLarge,
+            color = textColor,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable

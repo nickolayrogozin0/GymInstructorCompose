@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -92,7 +93,7 @@ fun WorkoutExerciseItemLabel() {
             Icon(imageVector = Icons.Default.RadioButtonUnchecked, contentDescription = null)
         }
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Default.MoreHoriz, contentDescription = null)
+            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
         }
     }
 

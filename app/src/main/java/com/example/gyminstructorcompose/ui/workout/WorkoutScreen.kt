@@ -19,23 +19,7 @@ fun WorkoutScreen(
 ) {
     Column()
     {
-        SmallTopAppBar(
-            title = { Text("Workout") },
-            actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "more button"
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = "more button"
-                    )
-                }
-            }
-        )
+        WorkoutScreenTopBar()
         Spacer(modifier = Modifier.height(16.dp))
         Calendar()
         Spacer(modifier = Modifier.height(8.dp))
@@ -45,5 +29,26 @@ fun WorkoutScreen(
             }
         }
     }
+}
+
+@Composable
+fun WorkoutScreenTopBar() {
+    SmallTopAppBar(
+        title = { Text("Workout") },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "more button"
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = "more button"
+                )
+            }
+        }
+    )
 }
 

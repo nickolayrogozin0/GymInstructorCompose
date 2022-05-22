@@ -1,6 +1,5 @@
 package com.example.gyminstructorcompose.ui.exerciselibrary
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseLibraryScreen() {
     Column(
-        Modifier.padding(top = 16.dp)
     ) {
         ScreenTopBar()
         Spacer(modifier = Modifier.height(16.dp))
@@ -117,7 +117,13 @@ fun SearchField() {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, end = 16.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+            focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary
+        )
     )
 }
 
@@ -138,7 +144,15 @@ fun DifficultySelector(modifier: Modifier) {
             onValueChange = {},
             label = { Text("Difficulty") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
+                trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
+            ),
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -175,7 +189,15 @@ fun TypeSelector(modifier: Modifier) {
             onValueChange = {},
             label = { Text("Type") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
+                trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
+            ),
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -202,7 +224,7 @@ fun ScreenTopBar() {
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    imageVector = Icons.Default.Edit,
+                    imageVector = Icons.Default.Star,
                     contentDescription = "more button"
                 )
             }

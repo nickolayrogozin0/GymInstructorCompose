@@ -1,26 +1,24 @@
 package com.example.gyminstructorcompose.ui.workout
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+
+
 import com.example.gyminstructorcompose.ui.workout.calendar.Calendar
 
+
 @Composable
-fun WorkoutScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+fun WorkoutScreen(
+
+) {
+    Column()
+    {
         SmallTopAppBar(
             title = { Text("Workout") },
             actions = {
@@ -41,6 +39,11 @@ fun WorkoutScreen() {
         Spacer(modifier = Modifier.height(16.dp))
         Calendar()
         Spacer(modifier = Modifier.height(8.dp))
-        WorkoutExerciseList()
+        LazyColumn(Modifier.weight(1f)) {
+            items(7) {
+                WorkoutExerciseItem()
+            }
+        }
     }
 }
+

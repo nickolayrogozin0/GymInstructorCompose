@@ -3,16 +3,12 @@ package com.example.gyminstructorcompose.ui.exerciselibrary
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +28,7 @@ fun ExerciseLibraryScreen() {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp)
-            ,
+                .padding(start = 16.dp, end = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             DifficultySelector(modifier = Modifier.weight(1f))
@@ -42,21 +37,21 @@ fun ExerciseLibraryScreen() {
         }
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
-        ){
-            items(10){
+        ) {
+            items(10) {
                 ExerciseLibraryCard()
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseLibraryCard() {
     Card(
         modifier = Modifier
             .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
             .fillMaxWidth(),
-        elevation = 4.dp,
         shape = RoundedCornerShape(10),
     ) {
         Column(
@@ -64,7 +59,7 @@ fun ExerciseLibraryCard() {
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-            ){
+            ) {
                 Text(
                     "Squat",
                     style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
@@ -90,13 +85,14 @@ fun ExerciseLibraryCard() {
             Row(Modifier.fillMaxWidth()) {
                 Text(
                     "Medium",
-                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text("Compound",
-                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                Text(
+                    "Compound",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -110,7 +106,7 @@ fun SearchField() {
     }
     OutlinedTextField(
         value = text,
-        onValueChange = {text = it},
+        onValueChange = { text = it },
         singleLine = true,
         label = {
             Text("Exercise title")
@@ -118,16 +114,10 @@ fun SearchField() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-            focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary
-        )
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DifficultySelector(modifier: Modifier) {
     val options = listOf("Any", "Easy", "Medium", "Hard")
@@ -144,15 +134,6 @@ fun DifficultySelector(modifier: Modifier) {
             onValueChange = {},
             label = { Text("Difficulty") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(
-                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
-                trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
-            ),
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -160,19 +141,18 @@ fun DifficultySelector(modifier: Modifier) {
         ) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
+                    text = { Text(text = selectionOption) },
                     onClick = {
                         selectedOptionText = selectionOption
                         expanded = false
                     }
-                ){
-                    Text(selectionOption)
-                }
+                )
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TypeSelector(modifier: Modifier) {
     val options = listOf("Any", "Compound", "Isolation")
@@ -189,15 +169,6 @@ fun TypeSelector(modifier: Modifier) {
             onValueChange = {},
             label = { Text("Type") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(
-                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
-                trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                focusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
-            ),
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -205,13 +176,14 @@ fun TypeSelector(modifier: Modifier) {
         ) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
+                    text = {
+                        Text(selectionOption)
+                    },
                     onClick = {
                         selectedOptionText = selectionOption
                         expanded = false
                     }
-                ){
-                    Text(selectionOption)
-                }
+                )
             }
         }
     }

@@ -19,13 +19,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gyminstructorcompose.ui.theme.GymInstructorComposeTheme
 
 @Composable
-fun Calendar() {
-    val currentDay = remember {
-        mutableStateOf(0)
+fun Calendar(
+
+) {
+
+    val viewModel = remember {
+        CalendarViewModel()
     }
+
+    var weekValues = remember {
+        viewModel.getWeekValues()
+    }
+
     Surface(
         modifier = Modifier
             .padding(16.dp, 0.dp, 16.dp, 0.dp),
@@ -44,48 +53,62 @@ fun Calendar() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    viewModel.decreaseWeek()
+                    weekValues =
+                        viewModel.getWeekValues()
+                }) {
                     Icon(imageVector = Icons.Default.ChevronLeft, contentDescription = null)
                 }
                 Text(
-                    "Week 1",
+                    "Week ${viewModel.currentWeek.value}",
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    viewModel.increaseWeek()
+                    weekValues =
+                        viewModel.getWeekValues()
+
+                }) {
                     Icon(imageVector = Icons.Default.ChevronRight, contentDescription = null)
                 }
             }
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                    .padding(24.dp, 0.dp, 24.dp, 0.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 items(7) { index ->
-                    Box(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable(
-                                onClick = {
-                                    currentDay.value = index
-                                }
-                            ),
-                        contentAlignment = Alignment.Center,
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if (index == currentDay.value) {
-                            CalendarCircle(
-                                index = index.toString(),
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                textColor = MaterialTheme.colorScheme.onPrimary
-                            )
-                        } else {
-                            CalendarCircle(
-                                index = index.toString(),
-                                backgroundColor = MaterialTheme.colorScheme.surface,
-                                textColor = MaterialTheme.colorScheme.onSurface
-                            )
+                        Text(
+                            text = viewModel.listOfWeekdays[index],
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.width(32.dp)
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        var backgroundColor = MaterialTheme.colorScheme.surface
+                        var textColor = MaterialTheme.colorScheme.onSurface
+
+                        if (index == viewModel.currentDay.value) {
+                            backgroundColor = MaterialTheme.colorScheme.primary
+                            textColor = MaterialTheme.colorScheme.onPrimary
+                        }
+
+                        CalendarCircle(
+                            index = weekValues[index].toString(),
+                            backgroundColor = backgroundColor,
+                            textColor = textColor
+                        ) {
+                            viewModel.currentDay.value = index
                         }
                     }
                 }
@@ -97,7 +120,12 @@ fun Calendar() {
 
 
 @Composable
-fun CalendarCircle(index: String, backgroundColor: Color, textColor: Color) {
+fun CalendarCircle(
+    index: String,
+    backgroundColor: Color,
+    textColor: Color,
+    onClick: (Int) -> Unit
+) {
     Box(
         modifier = Modifier
             .background
@@ -105,7 +133,10 @@ fun CalendarCircle(index: String, backgroundColor: Color, textColor: Color) {
                 color = backgroundColor,
                 shape = CircleShape
             )
-            .size(32.dp),
+            .size(32.dp)
+            .clickable {
+                onClick(index.toInt())
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(

@@ -79,7 +79,7 @@ fun WorkoutExerciseItemLabel() {
             index = "A",
             backgroundColor = MaterialTheme.colorScheme.primary,
             textColor = MaterialTheme.colorScheme.onPrimary
-        )
+        ){}
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "Squat",

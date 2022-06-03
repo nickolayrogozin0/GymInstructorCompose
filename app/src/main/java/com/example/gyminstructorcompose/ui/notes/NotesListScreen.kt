@@ -21,50 +21,28 @@ fun NotesListScreen(
 ) {
     Scaffold(
         topBar = {NotesListScreenTopAppBar(navController = navController)},
-        floatingActionButton = {FloatingActionButton(onClick = { /*TODO*/ }) {
+        floatingActionButton = {FloatingActionButton(onClick = {
+            navController.navigate("notes_add_edit/-1")
+        }) {
             Icon(imageVector = Icons.Default.Edit, contentDescription = "add note")
         }},
-        floatingActionButtonPosition = FabPosition.Center
+        floatingActionButtonPosition = FabPosition.End
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
-            items(5) { pos ->
+        LazyColumn(modifier = Modifier.padding(it).padding(16.dp)) {
+            items(20) { pos ->
                 NoteItem(
                     pos,
                     onClick = {
                         navController.navigate(
-                            "notes_add_edit/$it"
+                            "notes_add_edit/$pos"
                         )
                     }
                 )
+                Spacer(Modifier.height(16.dp))
             }
         }
     }
 
-//    Scaffold(
-//        topBar = { NotesListScreenTopAppBar(navController = navController) },
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = { /*TODO*/ }) {
-//                Icon(imageVector = Icons.Default.Edit, contentDescription = "add note")
-//            }
-//        },
-//        content = { paddingValues ->
-//            LazyColumn(
-//                modifier = Modifier.padding(paddingValues)
-//            ) {
-//                items(7) {
-//                    NoteItem(
-//                        it,
-//                        onClick = {
-//                            navController.navigate(
-//                                "notes_add_edit/$it"
-//                            )
-//                        }
-//                    )
-//                    Spacer(modifier = Modifier.height(16.dp))
-//                }
-//            }
-//        }
-//    )
 }
 
 

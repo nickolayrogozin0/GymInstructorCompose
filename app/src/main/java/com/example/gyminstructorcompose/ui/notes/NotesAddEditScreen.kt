@@ -1,17 +1,18 @@
 package com.example.gyminstructorcompose.ui.notes
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
@@ -19,7 +20,9 @@ fun NotesAddEditScreen(
     navController: NavController,
     noteId: Int
 ) {
-    Column() {
+    Column(
+
+    ) {
 
         var title by remember {
             mutableStateOf("")
@@ -37,11 +40,19 @@ fun NotesAddEditScreen(
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
             label = { Text("Title") }
         )
+        Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = body,
             onValueChange = { body = it },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp)
+            ,
             label = { Text("Content") }
         )
     }

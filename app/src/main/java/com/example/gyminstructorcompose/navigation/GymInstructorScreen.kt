@@ -32,4 +32,11 @@ sealed class GymInstructorScreen(
         title = "Account",
         icon = Icons.Default.Person
     )
+
+    object ExerciseExpanded : GymInstructorScreen(
+        route = "exerciseExpanded",
+        title = "Exercise",
+        icon = Icons.Default.Info
+    )
+
 }

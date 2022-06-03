@@ -1,5 +1,6 @@
 package com.example.gyminstructorcompose.ui.exerciselibrary
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,11 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.gyminstructorcompose.navigation.GymInstructorScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseLibraryScreen() {
+fun ExerciseLibraryScreen(
+    navController: NavController
+) {
     Column(
     ) {
         ScreenTopBar()
@@ -37,6 +42,11 @@ fun ExerciseLibraryScreen() {
         }
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
+            modifier = Modifier.clickable (
+                onClick = {
+                    navController.navigate(GymInstructorScreen.ExerciseExpanded.route)
+                }
+            )
         ) {
             items(10) {
                 ExerciseLibraryCard()
@@ -48,11 +58,12 @@ fun ExerciseLibraryScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseLibraryCard() {
-    Card(
+    Surface(
         modifier = Modifier
             .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(10),
+        shadowElevation = 4.dp
     ) {
         Column(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -62,22 +73,22 @@ fun ExerciseLibraryCard() {
             ) {
                 Text(
                     "Squat",
-                    style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.StarBorder,
                         contentDescription = null,
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = null,
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

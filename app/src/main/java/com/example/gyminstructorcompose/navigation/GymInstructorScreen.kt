@@ -1,42 +1,34 @@
 package com.example.gyminstructorcompose.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.gyminstructorcompose.R
 
 sealed class GymInstructorScreen(
     val route: String,
     val title: String,
-    val icon: ImageVector
+    val icon: Int
 ) {
     object Workout : GymInstructorScreen(
         route = "workout",
         title = "Workout",
-        icon = Icons.Default.Work
+        icon = R.drawable.ic_baseline_work_24
     )
 
     object Library : GymInstructorScreen(
         route = "library",
         title = "Library",
-        icon = Icons.Default.LibraryBooks
+        icon = R.drawable.ic_baseline_library_books_24
     )
 
     object Statistics : GymInstructorScreen(
         route = "statistics",
         title = "Statistics",
-        icon = Icons.Default.PieChart
+        icon = R.drawable.ic_baseline_pie_chart_24
     )
 
     object Account : GymInstructorScreen(
         route = "account",
         title = "Account",
-        icon = Icons.Default.Person
-    )
-
-    object ExerciseExpanded : GymInstructorScreen(
-        route = "exerciseExpanded",
-        title = "Exercise",
-        icon = Icons.Default.Info
+        icon = R.drawable.ic_baseline_person_24
     )
 
 }

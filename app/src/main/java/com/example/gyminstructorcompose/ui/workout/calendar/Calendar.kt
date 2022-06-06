@@ -6,20 +6,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.gyminstructorcompose.R
 import com.example.gyminstructorcompose.ui.theme.GymInstructorComposeTheme
 
 @Composable
@@ -58,7 +55,7 @@ fun Calendar(
                     weekValues =
                         viewModel.getWeekValues()
                 }) {
-                    Icon(imageVector = Icons.Default.ChevronLeft, contentDescription = null)
+                    Icon(painter = painterResource(id = R.drawable.ic_baseline_chevron_left_24), contentDescription = null)
                 }
                 Text(
                     "Week ${viewModel.currentWeek.value}",
@@ -71,7 +68,7 @@ fun Calendar(
                         viewModel.getWeekValues()
 
                 }) {
-                    Icon(imageVector = Icons.Default.ChevronRight, contentDescription = null)
+                    Icon(painter = painterResource(id = R.drawable.ic_baseline_chevron_right_24), contentDescription = null)
                 }
             }
             LazyRow(

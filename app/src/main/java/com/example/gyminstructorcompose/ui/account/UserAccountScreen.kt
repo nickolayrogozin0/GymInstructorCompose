@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -27,22 +28,22 @@ fun UserAccountScreen() {
         UserAccountCard()
         Column() {
             UserAccountButton(
-                Icons.Default.Straighten,
+                painterResource(id = R.drawable.ic_baseline_straighten_24),
                 "User measurements",
                 "Your maxes, body measurements"
             )
             UserAccountButton(
-                Icons.Default.FitnessCenter,
+                painterResource(id = R.drawable.ic_baseline_fitness_center_24),
                 "User measurements",
                 "Your maxes, body measurements"
             )
             UserAccountButton(
-                Icons.Default.Calculate,
+                painterResource(id = R.drawable.ic_baseline_calculate_24),
                 "User measurements",
                 "Your maxes, body measurements"
             )
             UserAccountButton(
-                Icons.Default.StickyNote2,
+                painterResource(id = R.drawable.ic_baseline_sticky_note_2_24),
                 "User measurements",
                 "Your maxes, body measurements"
             )
@@ -86,7 +87,7 @@ fun UserAccountCard() {
 
 @Composable
 fun UserAccountButton(
-    icon : ImageVector,
+    icon : Painter,
     header : String,
     subheader : String
 ) {
@@ -95,7 +96,7 @@ fun UserAccountButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = icon,
+            painter = icon,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant

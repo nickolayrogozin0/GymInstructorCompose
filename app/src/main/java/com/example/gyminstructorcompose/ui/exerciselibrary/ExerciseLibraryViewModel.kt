@@ -36,4 +36,10 @@ class ExerciseLibraryViewModel @Inject constructor(
         return exerciseInfoExtended!!
     }
 
+    fun updateFavorite(exerciseInfo: ExerciseInfo) {
+        viewModelScope.launch {
+            repository.updateFavorite(exerciseInfo)
+        }
+    }
+
 }

@@ -9,4 +9,5 @@ data class ExerciseInfo(
     val title : String,
     val difficulty : Int,
     val type : Int,
+    var isFavorite : Int
 )

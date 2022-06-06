@@ -1,8 +1,8 @@
-package com.example.gyminstructorcompose.modules
+package com.example.gyminstructorcompose.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.gyminstructorcompose.room.MIGRATION_1_2
+import com.example.gyminstructorcompose.room.NOTES_MIGRATION_1_2
 import com.example.gyminstructorcompose.room.NoteDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,7 +25,7 @@ object NoteModule {
             NoteDatabase::class.java,
             "note_database"
         )
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(NOTES_MIGRATION_1_2)
             .build()
     }
 

@@ -49,36 +49,63 @@ fun ExerciseLibraryScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn()
-            {
+        {
             items(allExercises.size) { pos ->
+
+
+                val favoriteIcon = remember {
+                    mutableStateOf(
+                        calcFavoriteIcon(allExercises[pos].isFavorite)
+                    )
+                }
+
+
                 ExerciseLibraryCard(
                     title = allExercises[pos].title,
-                    difficulty = when (allExercises[pos].difficulty){
+                    difficulty = when (allExercises[pos].difficulty) {
                         0 -> "Easy"
                         1 -> "Medium"
                         2 -> "Hard"
                         else -> "Unknown"
                     },
-                    type = when (allExercises[pos].type){
+                    type = when (allExercises[pos].type) {
                         0 -> "Compound"
                         1 -> "Isolation"
                         else -> "Unknown"
+                    },
+                    favoriteIcon = favoriteIcon.value,
+                    onFavorite = {
+                        val faveState = if (allExercises[pos].isFavorite == 0) 1 else 0
+                        allExercises[pos].isFavorite = faveState
+                        viewModel.updateFavorite(allExercises[pos])
+                        favoriteIcon.value = calcFavoriteIcon(faveState)
+                    },
+                    onClick = {
+                        navController.navigate("exercise_expanded/${allExercises[pos].id}")
                     }
-                ){
-                    navController.navigate("exercise_expanded/${allExercises[pos].id}")
-                }
+                )
             }
         }
+    }
+}
+
+private fun calcFavoriteIcon(state: Int): Int {
+    return when (state) {
+        0 -> R.drawable.ic_baseline_star_border_24
+        1 -> R.drawable.ic_baseline_star_24
+        else -> com.google.android.material.R.drawable.mtrl_ic_error
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseLibraryCard(
-    title : String,
-    difficulty : String,
-    type : String,
-    onClick: () -> Unit
+    title: String,
+    difficulty: String,
+    type: String,
+    favoriteIcon: Int,
+    onClick: () -> Unit,
+    onFavorite: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -100,13 +127,15 @@ fun ExerciseLibraryCard(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { /*TODO*/ }) {
+
+                IconButton(onClick = onFavorite) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_star_border_24),
+                        painter = painterResource(id = favoriteIcon),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
@@ -132,6 +161,7 @@ fun ExerciseLibraryCard(
         }
     }
 }
+
 
 @Composable
 fun SearchField() {
@@ -242,12 +272,4 @@ fun ScreenTopBar() {
             }
         }
     )
-}
-
-@Preview
-@Composable
-fun ExerciseLibraryCardPreview() {
-    ExerciseLibraryCard("Squat", "Medium", "Compound"){
-
-    }
 }

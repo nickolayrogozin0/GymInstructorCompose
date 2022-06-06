@@ -19,7 +19,7 @@ abstract class NoteDatabase : RoomDatabase(){
     abstract fun getNoteDao() : NoteDao
 }
 
-val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+val NOTES_MIGRATION_1_2: Migration = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE NoteTemp(id INTEGER PRIMARY KEY AUTOINCREMENT not null, title TEXT not null, body TEXT not null)")
         database.execSQL("DROP TABLE Note")

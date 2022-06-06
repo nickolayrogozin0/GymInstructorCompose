@@ -1,7 +1,8 @@
-package com.example.gyminstructorcompose.modules
+package com.example.gyminstructorcompose.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.gyminstructorcompose.room.EXERCISE_LIBRARY_MIGRATION_1_2
 import com.example.gyminstructorcompose.room.ExerciseDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,6 +26,7 @@ object ExerciseModule {
             "exercise_database"
         )
             .createFromAsset("database/exercise_database.db")
+            .addMigrations(EXERCISE_LIBRARY_MIGRATION_1_2)
             .build()
     }
 

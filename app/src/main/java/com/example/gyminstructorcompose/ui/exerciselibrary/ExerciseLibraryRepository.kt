@@ -20,4 +20,8 @@ class ExerciseLibraryRepository @Inject constructor(
         return database.exerciseDao().getExtended(id)
     }
 
+    suspend fun updateFavorite(exerciseInfo: ExerciseInfo) {
+        database.exerciseDao().updateFavorite(exerciseInfo)
+    }
+
 }

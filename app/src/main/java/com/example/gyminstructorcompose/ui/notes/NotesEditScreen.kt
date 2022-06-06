@@ -28,30 +28,30 @@ fun NotesEditScreen(
 ) {
     val note = viewModel.selectNote(noteId)
 
-    var title by remember {
+    val title = remember {
         mutableStateOf(note.title)
     }
 
-    var text by remember {
+    val text = remember {
         mutableStateOf(note.body)
     }
 
     Column() {
-        Text("$noteId $note")
-        NotesEditTopAppBar(navController = navController, onSave = { viewModel.updateNote(Note(note.id, title, text)) }) {
+        NotesEditTopAppBar(navController = navController, onSave = { viewModel.updateNote(Note(note.id, title.value, text.value)) }) {
             viewModel.deleteNote(note)
         }
+
         OutlinedTextField(
-            value = title,
-            onValueChange = { title = it },
+            value = title.value,
+            onValueChange = { title.value = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp),
             label = {Text("Title")}
         )
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = text.value,
+            onValueChange = { text.value = it },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),

@@ -1,6 +1,6 @@
 package com.example.gyminstructorcompose.ui.exerciselibrary
 
-import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,18 +15,20 @@ class ExerciseLibraryViewModel @Inject constructor(
     private val repository: ExerciseLibraryRepository
 ) : ViewModel() {
 
-    private val allExerciseInfo = mutableStateOf(
-        listOf<ExerciseInfo>()
-    )
+    private val allExerciseInfo = mutableStateOf(emptyList<ExerciseInfo>())
+
+    private val favoriteExercise = mutableStateOf(emptyList<ExerciseInfo>())
+
     private var exerciseInfoExtended: ExerciseInfoExtended? = null
 
-    fun getAllExerciseInfo(): List<ExerciseInfo> {
+    fun getAllExerciseInfo(): MutableState<List<ExerciseInfo>> {
+
+        if (allExerciseInfo.value.isNotEmpty()) return allExerciseInfo
+
         viewModelScope.launch {
             allExerciseInfo.value = repository.getAllShort()
-            Log.i("EXERCISE_VM", allExerciseInfo.value.size.toString())
         }
-        Log.i("EXERCISE_VM1", allExerciseInfo.value.size.toString())
-        return allExerciseInfo.value
+        return allExerciseInfo
     }
 
     fun getExtended(id: Int): ExerciseInfoExtended {
@@ -34,6 +36,13 @@ class ExerciseLibraryViewModel @Inject constructor(
             exerciseInfoExtended = repository.getExtended(id)
         }
         return exerciseInfoExtended!!
+    }
+
+    fun getFavoriteExercise(): MutableState<List<ExerciseInfo>> {
+        viewModelScope.launch {
+            favoriteExercise.value = repository.getFavoriteExercise()
+        }
+        return favoriteExercise
     }
 
     fun updateFavorite(exerciseInfo: ExerciseInfo) {

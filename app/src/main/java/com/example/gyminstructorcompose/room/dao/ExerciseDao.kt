@@ -1,5 +1,6 @@
 package com.example.gyminstructorcompose.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
@@ -17,5 +18,8 @@ interface ExerciseDao {
 
     @Update
     suspend fun updateFavorite(exerciseInfo: ExerciseInfo)
+
+    @Query("SELECT * FROM ExerciseInfo WHERE isFavorite = 1")
+    suspend fun getFavoriteExercise(): List<ExerciseInfo>
 
 }

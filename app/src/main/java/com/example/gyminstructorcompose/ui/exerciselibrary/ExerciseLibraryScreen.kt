@@ -8,17 +8,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Star
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.gyminstructorcompose.R
+import com.example.gyminstructorcompose.model.ExerciseInfo
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,12 +29,26 @@ fun ExerciseLibraryScreen(
     viewModel: ExerciseLibraryViewModel = hiltViewModel()
 ) {
 
-    val allExercises = viewModel.getAllExerciseInfo()
-    Log.i("EXERCISE", allExercises.size.toString())
+    val favoriteSort = remember {
+        mutableStateOf(0)
+    }
+
+    val difficultySort = remember {
+        mutableStateOf(0)
+    }
+
+    val allExercises = remember { viewModel.getAllExerciseInfo() }
+    val favoriteExercise = remember {
+        viewModel.getFavoriteExercise()
+    }
+    Log.i("EXERCISE", allExercises.value.size.toString())
     Column(
 
     ) {
-        ScreenTopBar()
+        ScreenTopBar(favoriteSort.value) {
+            if (favoriteSort.value == 0) favoriteSort.value =
+                1 else favoriteSort.value = 0
+        }
         Spacer(modifier = Modifier.height(16.dp))
         SearchField()
         Spacer(modifier = Modifier.height(16.dp))
@@ -48,46 +63,75 @@ fun ExerciseLibraryScreen(
             TypeSelector(modifier = Modifier.weight(1f))
         }
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn()
-        {
-            items(allExercises.size) { pos ->
+
+        val exerciseList = findExerciseList(favoriteSort.value, difficultySort.value)
+
+        ExerciseList(
+            navController = navController,
+            exerciseList = if (favoriteSort.value == 0) allExercises else favoriteExercise,
+            viewModel = viewModel
+        )
+    }
+
+}
+
+private fun findExerciseList(favorite: Int, difficulty: Int): MutableState<List<ExerciseInfo>> {
+    val sb = StringBuilder()
+    if (favorite != 0) sb.append("isFavorite = 1")
+    if (difficulty != 0) sb.append("difficulty = $difficulty")
+
+    Log.i("QUERY_TO_USE", sb.toString())
+
+    return mutableStateOf(emptyList())
+}
 
 
-                val favoriteIcon = remember {
-                    mutableStateOf(
-                        calcFavoriteIcon(allExercises[pos].isFavorite)
-                    )
-                }
+@Composable
+fun ExerciseList(
+    navController: NavController,
+    exerciseList: MutableState<List<ExerciseInfo>>,
+    viewModel: ExerciseLibraryViewModel
+) {
+    LazyColumn()
+    {
+        items(exerciseList.value.size) { pos ->
 
 
-                ExerciseLibraryCard(
-                    title = allExercises[pos].title,
-                    difficulty = when (allExercises[pos].difficulty) {
-                        0 -> "Easy"
-                        1 -> "Medium"
-                        2 -> "Hard"
-                        else -> "Unknown"
-                    },
-                    type = when (allExercises[pos].type) {
-                        0 -> "Compound"
-                        1 -> "Isolation"
-                        else -> "Unknown"
-                    },
-                    favoriteIcon = favoriteIcon.value,
-                    onFavorite = {
-                        val faveState = if (allExercises[pos].isFavorite == 0) 1 else 0
-                        allExercises[pos].isFavorite = faveState
-                        viewModel.updateFavorite(allExercises[pos])
-                        favoriteIcon.value = calcFavoriteIcon(faveState)
-                    },
-                    onClick = {
-                        navController.navigate("exercise_expanded/${allExercises[pos].id}")
-                    }
+            val favoriteIcon = remember {
+                mutableStateOf(
+                    calcFavoriteIcon(exerciseList.value[pos].isFavorite)
                 )
             }
+
+
+            ExerciseLibraryCard(
+                title = exerciseList.value[pos].title,
+                difficulty = when (exerciseList.value[pos].difficulty) {
+                    0 -> "Easy"
+                    1 -> "Medium"
+                    2 -> "Hard"
+                    else -> "Unknown"
+                },
+                type = when (exerciseList.value[pos].type) {
+                    0 -> "Compound"
+                    1 -> "Isolation"
+                    else -> "Unknown"
+                },
+                favoriteIcon = favoriteIcon.value,
+                onFavorite = {
+                    val faveState = if (exerciseList.value[pos].isFavorite == 0) 1 else 0
+                    exerciseList.value[pos].isFavorite = faveState
+                    viewModel.updateFavorite(exerciseList.value[pos])
+                    favoriteIcon.value = calcFavoriteIcon(faveState)
+                },
+                onClick = {
+                    navController.navigate("exercise_expanded/${exerciseList.value[pos].id}")
+                }
+            )
         }
     }
 }
+
 
 private fun calcFavoriteIcon(state: Int): Int {
     return when (state) {
@@ -254,13 +298,23 @@ fun TypeSelector(modifier: Modifier) {
 }
 
 @Composable
-fun ScreenTopBar() {
+fun ScreenTopBar(
+    showOnlyFavorite: Int,
+    onShowFavoriteChange: () -> Unit
+) {
+
     SmallTopAppBar(
         title = { Text("Exercise library") },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onShowFavoriteChange) {
                 Icon(
-                    imageVector = Icons.Default.Star,
+                    painter = painterResource(
+                        id = when (showOnlyFavorite) {
+                            0 -> R.drawable.ic_baseline_star_border_24
+                            1 -> R.drawable.ic_baseline_star_24
+                            else -> com.google.android.material.R.drawable.mtrl_ic_error
+                        }
+                    ),
                     contentDescription = "more button"
                 )
             }

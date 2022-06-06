@@ -1,5 +1,6 @@
 package com.example.gyminstructorcompose.ui.notes
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,33 +12,43 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: NoteViewModel = hiltViewModel()
 ) {
+
+    val allNotes = viewModel.getAll()
+
+    Log.i("NOTES_SIZE", allNotes.size.toString())
+
     Scaffold(
         topBar = {NotesListScreenTopAppBar(navController = navController)},
         floatingActionButton = {FloatingActionButton(onClick = {
-            navController.navigate("notes_add_edit/-1")
+            navController.navigate("notes_add")
         }) {
             Icon(imageVector = Icons.Default.Edit, contentDescription = "add note")
         }},
         floatingActionButtonPosition = FabPosition.End
     ) {
-        LazyColumn(modifier = Modifier.padding(it).padding(16.dp)) {
-            items(20) { pos ->
+        LazyColumn(modifier = Modifier
+            .padding(it)
+            .padding(16.dp)) {
+            items(allNotes.size) { pos ->
                 NoteItem(
-                    pos,
-                    onClick = {
-                        navController.navigate(
-                            "notes_add_edit/$pos"
-                        )
-                    }
-                )
+                    allNotes[pos].id,
+                    allNotes[pos].title,
+                    allNotes[pos].body
+                ) {
+                    navController.navigate(
+                        "notes_add_edit/${allNotes[pos].id}"
+                    )
+                }
                 Spacer(Modifier.height(16.dp))
             }
         }

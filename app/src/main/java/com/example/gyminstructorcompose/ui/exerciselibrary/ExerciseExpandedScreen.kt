@@ -8,18 +8,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlin.text.StringBuilder
 
 @Composable
 fun ExerciseExpandedScreen(
-
+    navController: NavController,
+    exerciseId : Int
 ) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Column {
-            ExerciseExpandedScreenTopBar()
+            ExerciseExpandedScreenTopBar(navController = navController)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -68,11 +70,11 @@ fun ExerciseExpandedScreen(
 }
 
 @Composable
-fun ExerciseExpandedScreenTopBar() {
+fun ExerciseExpandedScreenTopBar(navController: NavController) {
     SmallTopAppBar(
         title = { Text("Exercise") },
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
         },

@@ -22,7 +22,9 @@ import com.example.gyminstructorcompose.navigation.GymInstructorNavGraph
 import com.example.gyminstructorcompose.navigation.GymInstructorScreen
 
 import com.example.gyminstructorcompose.ui.theme.GymInstructorComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

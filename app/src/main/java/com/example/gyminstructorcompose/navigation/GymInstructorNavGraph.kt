@@ -2,7 +2,6 @@ package com.example.gyminstructorcompose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,7 +10,9 @@ import androidx.navigation.navArgument
 import com.example.gyminstructorcompose.ui.account.UserAccountScreen
 import com.example.gyminstructorcompose.ui.exerciselibrary.ExerciseExpandedScreen
 import com.example.gyminstructorcompose.ui.exerciselibrary.ExerciseLibraryScreen
-import com.example.gyminstructorcompose.ui.notes.NotesAddEditScreen
+import com.example.gyminstructorcompose.ui.notes.AddNoteScreen
+import com.example.gyminstructorcompose.ui.notes.NotesEditScreen
+
 import com.example.gyminstructorcompose.ui.notes.NotesListScreen
 import com.example.gyminstructorcompose.ui.statistics.StatisticsScreen
 import com.example.gyminstructorcompose.ui.workout.WorkoutScreen
@@ -38,14 +39,31 @@ fun GymInstructorNavGraph(navController: NavHostController) {
         composable(route = GymInstructorScreen.Account.route) {
             UserAccountScreen()
         }
-        composable(route = GymInstructorScreen.ExerciseExpanded.route){
-            ExerciseExpandedScreen()
+        composable(route = "exercise_expanded/{exerciseId}", arguments = listOf(
+            navArgument("exerciseId"){
+                type = NavType.IntType
+            }
+        )){
+            val exerciseId = remember {
+                it.arguments?.getInt("exerciseId")
+            }
+            if (exerciseId != null) {
+                ExerciseExpandedScreen(navController = navController, exerciseId)
+            }
         }
         
         composable("notes"){
-            NotesListScreen(navController = navController)
+
+            NotesListScreen(
+                navController = navController,
+
+            )
         }
 
+        composable("notes_add"){
+            AddNoteScreen(navController = navController)
+        }
+        
         composable(
             "notes_add_edit/{noteId}",
             arguments = listOf(
@@ -57,10 +75,12 @@ fun GymInstructorNavGraph(navController: NavHostController) {
             val noteId = remember {
                 it.arguments?.getInt("noteId")
             }
-            NotesAddEditScreen(
-                navController = navController,
-                noteId = noteId ?: -1,
-            )
+            if (noteId != null) {
+                NotesEditScreen(
+                    navController = navController,
+                    noteId = noteId,
+                )
+            }
         }
     }
 }

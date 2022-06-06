@@ -1,5 +1,7 @@
 package com.example.gyminstructorcompose.ui.exerciselibrary
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,12 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.gyminstructorcompose.navigation.GymInstructorScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseLibraryScreen() {
+fun ExerciseLibraryScreen(
+    navController: NavController,
+    viewModel: ExerciseLibraryViewModel = hiltViewModel()
+) {
+
+    val allExercises = viewModel.getAllExerciseInfo()
+    Log.i("EXERCISE", allExercises.size.toString())
     Column(
+
     ) {
         ScreenTopBar()
         Spacer(modifier = Modifier.height(16.dp))
@@ -36,10 +49,25 @@ fun ExerciseLibraryScreen() {
             TypeSelector(modifier = Modifier.weight(1f))
         }
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn(
-        ) {
-            items(10) {
-                ExerciseLibraryCard()
+        LazyColumn()
+            {
+            items(allExercises.size) { pos ->
+                ExerciseLibraryCard(
+                    title = allExercises[pos].title,
+                    difficulty = when (allExercises[pos].difficulty){
+                        0 -> "Easy"
+                        1 -> "Medium"
+                        2 -> "Hard"
+                        else -> "Unknown"
+                    },
+                    type = when (allExercises[pos].type){
+                        0 -> "Compound"
+                        1 -> "Isolation"
+                        else -> "Unknown"
+                    }
+                ){
+                    navController.navigate("exercise_expanded/${allExercises[pos].id}")
+                }
             }
         }
     }
@@ -47,12 +75,19 @@ fun ExerciseLibraryScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseLibraryCard() {
-    Card(
+fun ExerciseLibraryCard(
+    title : String,
+    difficulty : String,
+    type : String,
+    onClick: () -> Unit
+) {
+    Surface(
         modifier = Modifier
             .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(10),
+        shadowElevation = 4.dp
     ) {
         Column(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -61,36 +96,36 @@ fun ExerciseLibraryCard() {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    "Squat",
-                    style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.StarBorder,
                         contentDescription = null,
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = null,
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth()) {
                 Text(
-                    "Medium",
+                    text = difficulty,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    "Compound",
+                    text = type,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -213,5 +248,7 @@ fun ScreenTopBar() {
 @Preview
 @Composable
 fun ExerciseLibraryCardPreview() {
-    ExerciseLibraryCard()
+    ExerciseLibraryCard("Squat", "Medium", "Compound"){
+
+    }
 }
